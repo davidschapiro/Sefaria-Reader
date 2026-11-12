@@ -45,6 +45,10 @@ export class SefariaView extends ItemView {
 	private backBtn!: HTMLElement;
 	private fwdBtn!: HTMLElement;
 	private bodyEl!: HTMLElement;
+	private sizeEl!: HTMLElement;
+	private sizeSliders: { he?: HTMLInputElement; en?: HTMLInputElement } = {};
+	private renderedMarks: string | null = null;
+	private saveTimer: number | null = null;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -92,7 +96,13 @@ export class SefariaView extends ItemView {
 		this.suggestEl.hide();
 
 		this.iconButton(bar, "library", "Browse the library", () => void this.navigate({ kind: "library", path: [] }));
+		this.iconButton(bar, "a-large-small", "Text size", () => this.toggleSizeStrip());
 		this.iconButton(bar, "columns-2", "Layout", (evt) => this.layoutMenu(evt));
+
+		this.sizeEl = root.createDiv({ cls: "sefaria-size" });
+		this.sizeEl.hide();
+		this.sizeSliders.he = this.sizeSlider(this.sizeEl, "Hebrew", "hebrewSize", 12, 40);
+		this.sizeSliders.en = this.sizeSlider(this.sizeEl, "English", "englishSize", 10, 30);
 
 		this.bodyEl = root.createDiv({ cls: "sefaria-body" });
 
@@ -111,6 +121,10 @@ export class SefariaView extends ItemView {
 
 	async onClose(): Promise<void> {
 		if (this.suggestTimer !== null) window.clearTimeout(this.suggestTimer);
+		if (this.saveTimer !== null) {
+			window.clearTimeout(this.saveTimer);
+			await this.plugin.saveSettings();
+		}
 	}
 
 	getState(): Record<string, unknown> {
@@ -140,7 +154,12 @@ export class SefariaView extends ItemView {
 			"--sefaria-en-size": s.englishSize + "px",
 			"--sefaria-he-custom": custom ? `"${custom}"` : "serif",
 		});
-		if (this.current()?.kind === "text") void this.render();
+		const marks = `${s.showVowels}/${s.showCantillation}`;
+		if (this.renderedMarks !== null && marks !== this.renderedMarks && this.current()?.kind === "text") {
+			void this.render();
+		}
+		this.renderedMarks = marks;
+		this.syncSizeSliders();
 	}
 
 	focusInput(): void {
@@ -717,6 +736,62 @@ export class SefariaView extends ItemView {
 				})
 		);
 		menu.showAtMouseEvent(evt);
+	}
+
+	private toggleSizeStrip(): void {
+		if (this.sizeEl.isShown()) this.sizeEl.hide();
+		else this.sizeEl.show();
+	}
+
+	private sizeSlider(
+		parent: HTMLElement,
+		label: string,
+		key: "hebrewSize" | "englishSize",
+		min: number,
+		max: number
+	): HTMLInputElement {
+		const row = parent.createDiv({ cls: "sefaria-size-row" });
+		row.createSpan({ cls: "sefaria-size-label", text: label });
+		const input = row.createEl("input", {
+			type: "range",
+			cls: "slider",
+			attr: { min: String(min), max: String(max), step: "1", "aria-label": `${label} text size` },
+		});
+		const value = row.createSpan({ cls: "sefaria-size-value" });
+		input.value = String(this.plugin.settings[key]);
+		value.setText(input.value);
+		this.registerDomEvent(input, "input", () => {
+			const n = Number(input.value);
+			this.plugin.settings[key] = n;
+			value.setText(String(n));
+			// live update without re-rendering, so the reading position stays put
+			this.contentEl.setCssProps({
+				[key === "hebrewSize" ? "--sefaria-he-size" : "--sefaria-en-size"]: n + "px",
+			});
+			this.queueSave();
+		});
+		return input;
+	}
+
+	private syncSizeSliders(): void {
+		const s = this.plugin.settings;
+		for (const [input, n] of [
+			[this.sizeSliders.he, s.hebrewSize],
+			[this.sizeSliders.en, s.englishSize],
+		] as const) {
+			if (!input) continue;
+			input.value = String(n);
+			const v = input.nextElementSibling;
+			if (v) v.textContent = String(n);
+		}
+	}
+
+	private queueSave(): void {
+		if (this.saveTimer !== null) window.clearTimeout(this.saveTimer);
+		this.saveTimer = window.setTimeout(() => {
+			this.saveTimer = null;
+			void this.plugin.saveSettings();
+		}, 400);
 	}
 
 	private iconButton(parent: HTMLElement, icon: string, label: string, onClick: (evt: MouseEvent) => void): HTMLElement {

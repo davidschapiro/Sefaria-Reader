@@ -11,6 +11,7 @@ This is an unofficial plugin. It is not affiliated with or endorsed by Sefaria.
 - **Library browser.** Walk the categories down to a book and pick a chapter, daf or siman.
 - **Layouts.** Hebrew above English, side by side, Hebrew only, or English only.
 - **Hebrew fonts:** Taamey Frank (the font Sefaria uses) and Noto Sans Hebrew are bundled, so Hebrew looks the same on every device. You can also use your theme font or any installed font.
+- **Text size:** the Aa button in the reader opens sliders for Hebrew and English; changes apply instantly and keep your place.
 - **Vowels and cantillation** can each be switched off. Text you copy matches what is displayed.
 - **Copy helpers.** Click a segment number (or right-click a segment) to copy the Hebrew, the English, both, the reference, or a Markdown link. Ordinary select-and-copy works too.
 - **Footnotes** in translations expand when you click their marker.

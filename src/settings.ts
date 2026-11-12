@@ -129,7 +129,7 @@ export class SefariaSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl).setName("Hebrew text size").addSlider((sl) =>
 			sl
-				.setLimits(12, 36, 1)
+				.setLimits(12, 40, 1)
 				.setValue(s.hebrewSize)
 				.onChange(async (v) => {
 					s.hebrewSize = v;
@@ -139,7 +139,7 @@ export class SefariaSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl).setName("English text size").addSlider((sl) =>
 			sl
-				.setLimits(10, 28, 1)
+				.setLimits(10, 30, 1)
 				.setValue(s.englishSize)
 				.onChange(async (v) => {
 					s.englishSize = v;

@@ -108,6 +108,36 @@
 	height: 14px;
 }
 
+/* ---- text size strip ---- */
+.sefaria-size {
+	padding: 6px 14px 8px;
+	border-bottom: 1px solid var(--background-modifier-border);
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	flex: 0 0 auto;
+}
+.sefaria-size-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: var(--font-ui-small);
+}
+.sefaria-size-label {
+	width: 4.5em;
+	color: var(--text-muted);
+}
+.sefaria-size-row input[type="range"] {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.sefaria-size-value {
+	width: 2em;
+	text-align: right;
+	color: var(--text-faint);
+	font-variant-numeric: tabular-nums;
+}
+
 /* ---- body ---- */
 .sefaria-body {
 	flex: 1 1 auto;

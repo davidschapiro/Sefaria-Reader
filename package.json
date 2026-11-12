@@ -1,6 +1,6 @@
 {
   "name": "sefaria-reader",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Read Jewish texts from the Sefaria library in an Obsidian sidebar.",
   "main": "main.js",
   "scripts": {

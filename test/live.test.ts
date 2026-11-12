@@ -138,6 +138,22 @@ test("View: open a segment, highlight, navigate, layout and marks", async () => 
 	assert.ok(el.classList.contains("sefaria-hefont-custom") && !el.classList.contains("sefaria-hefont-taamey"));
 	assert.equal(el.style.getPropertyValue("--sefaria-he-custom"), '"SBL Hebrew x"', "quotes and semicolons are stripped");
 
+	// text size sliders: live CSS update, no re-render, saved once after dragging
+	let saves = 0;
+	plugin.saveSettings = async () => { saves++; view.applySettings(); };
+	const firstSeg = el.querySelector(".sefaria-seg");
+	click(el.querySelector('[data-icon="a-large-small"]')!);
+	assert.notEqual((el.querySelector(".sefaria-size") as HTMLElement).style.display, "none");
+	const heSlider = el.querySelector('.sefaria-size input[aria-label="Hebrew text size"]') as HTMLInputElement;
+	assert.equal(heSlider.value, "20");
+	for (const v of ["24", "28", "31"]) { heSlider.value = v; heSlider.dispatchEvent(new dom.window.Event("input")); }
+	assert.equal(el.style.getPropertyValue("--sefaria-he-size"), "31px");
+	assert.equal(plugin.settings.hebrewSize, 31);
+	assert.equal(heSlider.nextElementSibling!.textContent, "31");
+	await new Promise((r) => setTimeout(r, 600));
+	assert.equal(saves, 1, "debounced to one save");
+	assert.equal(el.querySelector(".sefaria-seg"), firstSeg, "passage not re-rendered");
+
 	// external link goes to the browser, not back into the reader
 	click(el.querySelector(".sefaria-external")!);
 	assert.equal(opened[opened.length - 1], "https://www.sefaria.org/Genesis.1.3");

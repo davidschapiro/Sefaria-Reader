@@ -24,6 +24,7 @@ export function installDomExtensions(win: any) {
 	P.setText = function (t: string) { this.textContent = t; };
 	P.hide = function () { this.style.display = "none"; };
 	P.show = function () { this.style.display = ""; };
+	P.isShown = function () { return this.style.display !== "none"; };
 	P.scrollIntoView = function () { (win as any).__scrolledTo = this.getAttribute("data-ref"); };
 }
 
