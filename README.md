@@ -44,6 +44,10 @@ By hand: copy `main.js`, `manifest.json` and `styles.css` into `<your vault>/.ob
   - Noto Sans Hebrew, © 2024 The Noto Project Authors, SIL Open Font License 1.1.
 - Texts: from the Sefaria library via its public API, each under its own license.
 
+## Releasing
+
+Bump `version` in `manifest.json` and `package.json`, add it to `versions.json`, update `RELEASE_NOTES.md`, and push to `main`. The Release workflow builds, tests and publishes the GitHub release automatically.
+
 ## Development
 
 ```

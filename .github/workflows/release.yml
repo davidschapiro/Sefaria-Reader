@@ -1,41 +1,58 @@
 name: Release
 
-# Push a tag that matches the version in manifest.json (e.g. 0.2.0, no "v")
-# and this builds the plugin and publishes a GitHub release with the three files Obsidian needs.
+# Bump "version" in manifest.json (and versions.json), push to main:
+# if no release exists for that version yet, this builds the plugin and publishes
+# a GitHub release (tag = version, no "v") with the three files Obsidian needs.
+# Can also be started by hand from the Actions tab.
 on:
   push:
-    tags:
-      - "*"
+    branches: [main]
+    paths: [manifest.json]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Build
-        run: |
-          npm ci --legacy-peer-deps
-          npm run build
-          npm test
-
-      - name: Check tag matches manifest version
-        run: |
-          v=$(node -p "require('./manifest.json').version")
-          [ "$v" = "${GITHUB_REF_NAME}" ] || { echo "Tag ${GITHUB_REF_NAME} does not match manifest version $v"; exit 1; }
-
-      - name: Create release
+      - name: Read version
+        id: v
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${GITHUB_REF_NAME}" \
-            --title "${GITHUB_REF_NAME}" \
+          v=$(node -p "require('./manifest.json').version")
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          if gh release view "$v" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Release $v already exists, nothing to do."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        if: steps.v.outputs.exists == 'false'
+        with:
+          node-version: "22"
+
+      - name: Build and test
+        if: steps.v.outputs.exists == 'false'
+        run: |
+          npm ci --legacy-peer-deps
+          npx eslint src
+          npm run build
+          npm test
+
+      - name: Create release
+        if: steps.v.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.v.outputs.version }}" \
+            --target "$GITHUB_SHA" \
+            --title "${{ steps.v.outputs.version }}" \
             --notes-file RELEASE_NOTES.md \
             main.js manifest.json styles.css
