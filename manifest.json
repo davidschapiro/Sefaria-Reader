@@ -1,8 +1,8 @@
 {
 	"id": "sefaria-reader",
 	"name": "Sefaria Reader",
-	"version": "0.3.1",
-	"minAppVersion": "1.7.2",
+	"version": "0.4.0",
+	"minAppVersion": "1.13.0",
 	"description": "Read Jewish texts from the Sefaria library in a sidebar, in Hebrew and English. Open them from links in your notes, by reference, or by searching.",
 	"author": "David Schapiro",
 	"isDesktopOnly": false

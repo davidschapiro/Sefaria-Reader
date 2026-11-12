@@ -1,6 +1,4 @@
-Maintenance release for the Obsidian community review.
+Requires Obsidian 1.13 or newer (users on older versions keep 0.3.1).
 
-- Settings appear in Obsidian's settings search (Obsidian 1.13+)
-- Dependencies install cleanly with plain `npm ci`; no known vulnerabilities
-- Release files carry GitHub build-provenance attestations
-- No `!important` in the stylesheet; no change in appearance
+- Settings use Obsidian's declarative settings API only, so they appear in Obsidian's settings search; the old settings page code is gone
+- Fixes the community review error "Uses Obsidian APIs newer than the declared minAppVersion"

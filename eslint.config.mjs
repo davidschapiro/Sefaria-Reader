@@ -10,6 +10,10 @@ export default defineConfig([
 			parser: tsparser,
 			parserOptions: { project: "./tsconfig.json" },
 		},
+		// The community review runs these too; recommended doesn't enable them.
+		rules: {
+			"obsidianmd/no-unsupported-api": "error",
+		},
 	},
 	{ ignores: ["main.js", "node_modules/", "test/", ".test-build/", "*.mjs"] },
 ]);
