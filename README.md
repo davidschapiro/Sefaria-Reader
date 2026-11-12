@@ -42,6 +42,8 @@ Texts and translations belong to their respective rights holders. The version ti
 
 ## Installing
 
+Requires Obsidian 1.13 or newer. On older versions Obsidian installs 0.3.1, the last release that supports them.
+
 From Obsidian: Settings → Community plugins → Browse → search for "Sefaria Reader".
 
 By hand: copy `main.js`, `manifest.json` and `styles.css` into `<your vault>/.obsidian/plugins/sefaria-reader/`, then enable **Sefaria Reader** under Settings → Community plugins.
