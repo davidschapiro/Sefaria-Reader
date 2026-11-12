@@ -2,7 +2,14 @@
 
 Read Jewish texts from the [Sefaria](https://www.sefaria.org) library in an Obsidian sidebar, in Hebrew and English, next to the note you are writing.
 
-This is an unofficial plugin. It is not affiliated with or endorsed by Sefaria.
+<a href="https://www.sefaria.org">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/powered-by-sefaria-light.png">
+    <img src="assets/powered-by-sefaria-dark.png" alt="Powered by Sefaria" width="160">
+  </picture>
+</a>
+
+This plugin is powered by Sefaria's open API but was not developed by Sefaria.
 
 ## What it does
 
