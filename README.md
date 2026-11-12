@@ -34,6 +34,8 @@ This plugin is powered by Sefaria's open API but was not developed by Sefaria.
 
 The plugin needs an internet connection. It sends requests only to `https://www.sefaria.org/api/` (texts, name lookup, search, table of contents). No account, no API key, no telemetry. Nothing is written to your vault.
 
+The plugin writes to the clipboard only when you choose one of the copy commands on a segment. It never reads the clipboard.
+
 ## Text licenses
 
 Texts and translations belong to their respective rights holders. The version title and license of what you are reading are shown at the foot of each passage; follow them when you reuse text.
@@ -59,7 +61,7 @@ Bump `version` in `manifest.json` and `package.json`, add it to `versions.json`,
 ## Development
 
 ```
-npm install --legacy-peer-deps
+npm install
 npm run dev        # watch build
 npm run build      # type-check and production build
 npx eslint src     # Obsidian's review rules

@@ -1,10 +1,6 @@
-First public release.
+Maintenance release for the Obsidian community review.
 
-- Read Sefaria texts in Hebrew and English in the sidebar
-- Sefaria links in notes open in the reader
-- Search bar for references, titles and full-text search
-- Library browser
-- Four layouts; vowels and cantillation can be hidden
-- Text-size sliders for Hebrew and English right in the reader
-- Hebrew in Taamey Frank (Sefaria's font) or Noto Sans Hebrew, both bundled
-- Copy Hebrew, English, both, reference or Markdown link per segment
+- Settings appear in Obsidian's settings search (Obsidian 1.13+)
+- Dependencies install cleanly with plain `npm ci`; no known vulnerabilities
+- Release files carry GitHub build-provenance attestations
+- No `!important` in the stylesheet; no change in appearance

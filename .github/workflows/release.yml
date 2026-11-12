@@ -12,6 +12,8 @@ on:
 
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 
 jobs:
   release:
@@ -41,10 +43,19 @@ jobs:
       - name: Build and test
         if: steps.v.outputs.exists == 'false'
         run: |
-          npm ci --legacy-peer-deps
+          npm ci
           npx eslint src
           npm run build
           npm test
+
+      - name: Attest build provenance
+        if: steps.v.outputs.exists == 'false'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
 
       - name: Create release
         if: steps.v.outputs.exists == 'false'

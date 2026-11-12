@@ -30,14 +30,17 @@
 	unicode-range: U+0590-05FF, U+FB1D-FB4F, U+25CC;
 }
 
-.sefaria-reader {
+.view-content.sefaria-reader {
 	--sefaria-he-size: 20px;
 	--sefaria-en-size: 15px;
 	--sefaria-he-font: "Sefaria Reader Taamey Frank", "Taamey Frank CLM", serif;
 	display: flex;
 	flex-direction: column;
-	padding: 0 !important;
 	overflow: hidden;
+}
+/* beats Obsidian's default view padding without !important */
+.workspace-leaf-content[data-type="sefaria-reader"] > .view-content.sefaria-reader {
+	padding: 0;
 }
 .sefaria-reader.sefaria-hefont-sans {
 	--sefaria-he-font: "Sefaria Reader Noto Sans Hebrew", "Noto Sans Hebrew", sans-serif;
