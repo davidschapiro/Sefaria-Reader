@@ -40,13 +40,13 @@ Texts and translations belong to their respective rights holders. The version ti
 
 ## Installing
 
-From Obsidian: Settings → Community plugins → Browse → search for "Sefaria Reader" (once it is listed).
+From Obsidian: Settings → Community plugins → Browse → search for "Sefaria Reader".
 
 By hand: copy `main.js`, `manifest.json` and `styles.css` into `<your vault>/.obsidian/plugins/sefaria-reader/`, then enable **Sefaria Reader** under Settings → Community plugins.
 
 ## Credits and licenses
 
-- Plugin code: MIT, see `LICENSE`.
+- Plugin code: MIT, see `LICENSE`. Font and text notices: `NOTICE`.
 - Bundled fonts (embedded in `styles.css`, subset to Hebrew):
   - Taamey Frank CLM, © 2009–2010 Yoram Gnat, [Culmus project](https://culmus.sourceforge.io/), GNU GPL v2.
   - Noto Sans Hebrew, © 2024 The Noto Project Authors, SIL Open Font License 1.1.
