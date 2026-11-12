@@ -1,0 +1,31 @@
+{
+  "name": "sefaria-reader",
+  "version": "0.2.0",
+  "description": "Read Jewish texts from the Sefaria library in an Obsidian sidebar.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "node test/run.mjs",
+    "test:live": "node test/run.mjs live"
+  },
+  "keywords": [
+    "obsidian",
+    "sefaria"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/parser": "^8.72.2",
+    "builtin-modules": "^4.0.0",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-obsidianmd": "^0.5.1",
+    "jsdom": "^25.0.0",
+    "obsidian": "latest",
+    "tslib": "^2.8.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.72.2"
+  }
+}
