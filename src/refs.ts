@@ -51,6 +51,16 @@ export function sefariaUrl(ref: string): string {
 	return "https://www.sefaria.org/" + encodeURI(s).replace(/\?/g, "%3F").replace(/#/g, "%23");
 }
 
+/** Markdown link whose text is the reference in parentheses: [(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14) */
+export function referenceLink(ref: string): string {
+	return `[(${ref})](${sefariaUrl(ref)})`;
+}
+
+/** Hebrew, English and the linked reference, one per line (empty parts skipped). */
+export function textWithReference(he: string, en: string, ref: string): string {
+	return [he, en, ref ? referenceLink(ref) : ""].filter(Boolean).join("\n");
+}
+
 const CANTILLATION = /[֑-֯]/g;
 const VOWELS = /[ְ-ׇֽֿׁׂׅׄ]/g;
 

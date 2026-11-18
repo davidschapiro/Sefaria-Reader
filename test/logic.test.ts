@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { SefariaApi, TextResponse } from "../src/api";
-import { buildContents, flattenSection, loadPassage, parseSefariaUrl, sectionLabels, sefariaUrl, stripHebrewMarks } from "../src/refs";
+import { buildContents, flattenSection, loadPassage, parseSefariaUrl, referenceLink, sectionLabels, sefariaUrl, stripHebrewMarks, textWithReference } from "../src/refs";
 
 test("parseSefariaUrl accepts text links and rejects site pages", () => {
 	assert.equal(parseSefariaUrl("https://www.sefaria.org/Genesis.1.1?lang=bi&with=all"), "Genesis.1.1");
@@ -23,6 +23,15 @@ test("sefariaUrl builds canonical links", () => {
 	assert.equal(sefariaUrl("Mishneh Torah, Mourning 14:1"), "https://www.sefaria.org/Mishneh_Torah,_Mourning.14.1");
 	assert.equal(sefariaUrl("Pirkei Avot"), "https://www.sefaria.org/Pirkei_Avot");
 	assert.equal(parseSefariaUrl(sefariaUrl("Rashi on Genesis 1:1:1")), "Rashi_on_Genesis.1.1.1");
+});
+
+test("copy with reference links the reference to Sefaria", () => {
+	assert.equal(referenceLink("Hosea 12:14"), "[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)");
+	assert.equal(
+		textWithReference("וּבְנָבִיא נִשְׁמָר׃", "Through a prophet they were guarded.", "Hosea 12:14"),
+		"וּבְנָבִיא נִשְׁמָר׃\nThrough a prophet they were guarded.\n[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)"
+	);
+	assert.equal(textWithReference("", "Only English", "Genesis 1:1"), "Only English\n[(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
 });
 
 test("stripHebrewMarks removes cantillation and vowels independently", () => {
