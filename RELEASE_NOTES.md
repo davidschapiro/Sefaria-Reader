@@ -1,4 +1,5 @@
-Requires Obsidian 1.13 or newer (users on older versions keep 0.3.1).
+Requires Obsidian 1.13 or newer.
 
-- Settings use Obsidian's declarative settings API only, so they appear in Obsidian's settings search; the old settings page code is gone
-- Fixes the community review error "Uses Obsidian APIs newer than the declared minAppVersion"
+- New copy icon under each segment number: one click copies Hebrew, English and the reference
+- "Copy both with reference" now links the reference to Sefaria: `[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)`
+- Copied poetry keeps its line breaks, as on Sefaria (before, lines like JPS Hosea ran together: "Assuredly,They shall…")
