@@ -35,13 +35,15 @@ test("copy with reference links the reference to Sefaria", () => {
 	assert.equal(textWithReference("", "Only English", "Genesis 1:1"), "Only English\n[(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
 });
 
-test("plainTextOf keeps a space at poetry line breaks and drops footnotes", () => {
+test("plainTextOf keeps poetry line breaks and drops footnotes", () => {
 	const doc = new JSDOM("<!doctype html><body></body>").window.document;
 	const el = doc.createElement("div");
 	el.innerHTML =
 		'<span class="poetry">Assuredly,</span><br><span class="poetry">They shall be like morning clouds,</span><br>' +
 		'<span class="poetry">Like dew so early gone;</span><sup class="footnote-marker">a</sup><i class="footnote">note</i>';
-	assert.equal(plainTextOf(el), "Assuredly, They shall be like morning clouds, Like dew so early gone;");
+	assert.equal(plainTextOf(el), "Assuredly,\nThey shall be like morning clouds,\nLike dew so early gone;");
+	el.innerHTML = "  prose   with \n  spaces <b>bold</b> ";
+	assert.equal(plainTextOf(el), "prose with spaces bold");
 	assert.equal(plainTextOf(null), "");
 });
 

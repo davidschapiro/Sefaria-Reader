@@ -52,15 +52,21 @@ export function sefariaUrl(ref: string): string {
 }
 
 /**
- * Copyable text of a rendered segment: footnotes dropped, and line breaks (poetry, e.g. JPS
- * prophets and Psalms) turned into spaces so the lines don't run together.
+ * Copyable text of a rendered segment: footnotes dropped; line breaks (poetry, e.g. JPS
+ * prophets and Psalms) kept as newlines, so copied poetry keeps its lines as on Sefaria.
  */
 export function plainTextOf(el: Element | null): string {
 	if (!el) return "";
 	const clone = el.cloneNode(true) as Element;
 	clone.querySelectorAll(".footnote, .footnote-marker").forEach((n) => n.remove());
-	clone.querySelectorAll("br").forEach((n) => n.replaceWith(" "));
-	return (clone.textContent ?? "").replace(/\s+/g, " ").trim();
+	// <br> becomes a marker first, so newlines that are only whitespace in the HTML source stay spaces
+	const BREAK = "\u0001";
+	clone.querySelectorAll("br").forEach((n) => n.replaceWith(BREAK));
+	return (clone.textContent ?? "")
+		.split(BREAK)
+		.map((line) => line.replace(/\s+/g, " ").trim())
+		.filter(Boolean)
+		.join("\n");
 }
 
 /** Markdown link whose text is the reference in parentheses: [(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14) */
