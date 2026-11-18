@@ -9,6 +9,7 @@ import {
 	loadPassage,
 	parseSefariaUrl,
 	plainTextOf,
+	quoteWithReference,
 	sefariaUrl,
 	stripHebrewMarks,
 	textWithReference,
@@ -382,7 +383,7 @@ export class SefariaView extends ItemView {
 		});
 		const copyBtn = side.createEl("a", {
 			cls: "sefaria-seg-copy",
-			attr: { href: "#", "aria-label": `Copy ${seg.ref} with reference` },
+			attr: { href: "#", "aria-label": `Copy ${seg.ref} as quote with reference` },
 		});
 		setIcon(copyBtn, "copy");
 		const cols = el.createDiv({ cls: "sefaria-seg-cols" });
@@ -606,7 +607,7 @@ export class SefariaView extends ItemView {
 		if (a.classList.contains("sefaria-seg-copy")) {
 			evt.preventDefault();
 			const seg = a.closest<HTMLElement>(".sefaria-seg");
-			if (seg) void this.copy(this.segmentWithReference(seg));
+			if (seg) void this.copy(this.segmentQuote(seg));
 			return;
 		}
 		if (a.classList.contains("sefaria-seg-num")) {
@@ -674,8 +675,8 @@ export class SefariaView extends ItemView {
 		return plainTextOf(el);
 	}
 
-	private segmentWithReference(seg: HTMLElement): string {
-		return textWithReference(
+	private segmentQuote(seg: HTMLElement): string {
+		return quoteWithReference(
 			this.plainText(seg.querySelector(".sefaria-he")),
 			this.plainText(seg.querySelector(".sefaria-en")),
 			seg.getAttribute("data-ref") ?? ""
@@ -700,6 +701,7 @@ export class SefariaView extends ItemView {
 		copy("Copy English", en);
 		if (he && en) copy("Copy both", `${he}\n${en}`);
 		copy("Copy both with reference", textWithReference(he, en, ref));
+		copy("Copy as quote with reference", quoteWithReference(he, en, ref));
 		menu.addSeparator();
 		copy("Copy reference", ref);
 		copy("Copy link", `[${ref}](${sefariaUrl(ref)})`);

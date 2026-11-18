@@ -79,6 +79,21 @@ export function textWithReference(he: string, en: string, ref: string): string {
 	return [he, en, ref ? referenceLink(ref) : ""].filter(Boolean).join("\n");
 }
 
+/**
+ * Hebrew and English as Markdown quotes with "> " on every line. Hebrew and English are separate
+ * quotes (blank line between), so Obsidian gives each its own direction: Hebrew with the bar on
+ * the right, English and the linked reference with the bar on the left.
+ */
+export function quoteWithReference(he: string, en: string, ref: string): string {
+	const quote = (lines: string[]) =>
+		lines
+			.flatMap((l) => l.split("\n"))
+			.filter(Boolean)
+			.map((l) => "> " + l)
+			.join("\n");
+	return [quote([he]), quote([en, ref ? referenceLink(ref) : ""])].filter(Boolean).join("\n\n");
+}
+
 const CANTILLATION = /[֑-֯]/g;
 const VOWELS = /[ְ-ׇֽֿׁׂׅׄ]/g;
 
