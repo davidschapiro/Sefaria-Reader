@@ -80,9 +80,9 @@ export function textWithReference(he: string, en: string, ref: string): string {
 }
 
 /**
- * Hebrew and English as Markdown quotes with "> " on every line. Hebrew and English are separate
- * quotes (blank line between), so Obsidian gives each its own direction: Hebrew with the bar on
- * the right, English and the linked reference with the bar on the left.
+ * Hebrew, English and the linked reference as one Markdown quote with "> " on every line.
+ * In Live Preview each line gets its own direction (Hebrew bar right, English bar left); in
+ * Reading view the whole quote follows its first line, so a Hebrew-first quote has the bar on the right.
  */
 export function quoteWithReference(he: string, en: string, ref: string): string {
 	const quote = (lines: string[]) =>
@@ -91,7 +91,7 @@ export function quoteWithReference(he: string, en: string, ref: string): string 
 			.filter(Boolean)
 			.map((l) => "> " + l)
 			.join("\n");
-	return [quote([he]), quote([en, ref ? referenceLink(ref) : ""])].filter(Boolean).join("\n\n");
+	return [quote([he]), quote([en, ref ? referenceLink(ref) : ""])].filter(Boolean).join("\n");
 }
 
 const CANTILLATION = /[֑-֯]/g;

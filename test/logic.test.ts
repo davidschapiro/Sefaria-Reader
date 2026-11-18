@@ -47,13 +47,13 @@ test("plainTextOf keeps poetry line breaks and drops footnotes", () => {
 	assert.equal(plainTextOf(null), "");
 });
 
-test("quoteWithReference quotes every line, Hebrew and English as separate quotes", () => {
+test("quoteWithReference quotes every line, Hebrew and English in one quote", () => {
 	assert.equal(
 		quoteWithReference("וְעַתָּה יוֹסִפוּ לַחֲטֹא", "And now they go on sinning;\nThey have made them molten images,", "Hosea 13:2"),
-		"> וְעַתָּה יוֹסִפוּ לַחֲטֹא\n\n> And now they go on sinning;\n> They have made them molten images,\n> [(Hosea 13:2)](https://www.sefaria.org/Hosea.13.2)"
+		"> וְעַתָּה יוֹסִפוּ לַחֲטֹא\n> And now they go on sinning;\n> They have made them molten images,\n> [(Hosea 13:2)](https://www.sefaria.org/Hosea.13.2)"
 	);
 	assert.equal(quoteWithReference("", "Only English", "Genesis 1:1"), "> Only English\n> [(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
-	assert.equal(quoteWithReference("עברית", "", "Genesis 1:1"), "> עברית\n\n> [(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
+	assert.equal(quoteWithReference("עברית", "", "Genesis 1:1"), "> עברית\n> [(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
 });
 
 test("stripHebrewMarks removes cantillation and vowels independently", () => {
