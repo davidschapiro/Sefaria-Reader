@@ -8,6 +8,7 @@ import {
 	buildContents,
 	loadPassage,
 	parseSefariaUrl,
+	plainTextOf,
 	sefariaUrl,
 	stripHebrewMarks,
 	textWithReference,
@@ -670,10 +671,7 @@ export class SefariaView extends ItemView {
 	}
 
 	private plainText(el: Element | null): string {
-		if (!el) return "";
-		const clone = el.cloneNode(true) as HTMLElement;
-		clone.querySelectorAll(".footnote, .footnote-marker").forEach((n) => n.remove());
-		return (clone.textContent ?? "").replace(/\s+/g, " ").trim();
+		return plainTextOf(el);
 	}
 
 	private segmentWithReference(seg: HTMLElement): string {

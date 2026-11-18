@@ -1,7 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { JSDOM } from "jsdom";
 import { SefariaApi, TextResponse } from "../src/api";
-import { buildContents, flattenSection, loadPassage, parseSefariaUrl, referenceLink, sectionLabels, sefariaUrl, stripHebrewMarks, textWithReference } from "../src/refs";
+import { buildContents, flattenSection, loadPassage, parseSefariaUrl, plainTextOf, referenceLink, sectionLabels, sefariaUrl, stripHebrewMarks, textWithReference } from "../src/refs";
 
 test("parseSefariaUrl accepts text links and rejects site pages", () => {
 	assert.equal(parseSefariaUrl("https://www.sefaria.org/Genesis.1.1?lang=bi&with=all"), "Genesis.1.1");
@@ -32,6 +33,16 @@ test("copy with reference links the reference to Sefaria", () => {
 		"וּבְנָבִיא נִשְׁמָר׃\nThrough a prophet they were guarded.\n[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)"
 	);
 	assert.equal(textWithReference("", "Only English", "Genesis 1:1"), "Only English\n[(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
+});
+
+test("plainTextOf keeps a space at poetry line breaks and drops footnotes", () => {
+	const doc = new JSDOM("<!doctype html><body></body>").window.document;
+	const el = doc.createElement("div");
+	el.innerHTML =
+		'<span class="poetry">Assuredly,</span><br><span class="poetry">They shall be like morning clouds,</span><br>' +
+		'<span class="poetry">Like dew so early gone;</span><sup class="footnote-marker">a</sup><i class="footnote">note</i>';
+	assert.equal(plainTextOf(el), "Assuredly, They shall be like morning clouds, Like dew so early gone;");
+	assert.equal(plainTextOf(null), "");
 });
 
 test("stripHebrewMarks removes cantillation and vowels independently", () => {

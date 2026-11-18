@@ -51,6 +51,18 @@ export function sefariaUrl(ref: string): string {
 	return "https://www.sefaria.org/" + encodeURI(s).replace(/\?/g, "%3F").replace(/#/g, "%23");
 }
 
+/**
+ * Copyable text of a rendered segment: footnotes dropped, and line breaks (poetry, e.g. JPS
+ * prophets and Psalms) turned into spaces so the lines don't run together.
+ */
+export function plainTextOf(el: Element | null): string {
+	if (!el) return "";
+	const clone = el.cloneNode(true) as Element;
+	clone.querySelectorAll(".footnote, .footnote-marker").forEach((n) => n.remove());
+	clone.querySelectorAll("br").forEach((n) => n.replaceWith(" "));
+	return (clone.textContent ?? "").replace(/\s+/g, " ").trim();
+}
+
 /** Markdown link whose text is the reference in parentheses: [(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14) */
 export function referenceLink(ref: string): string {
 	return `[(${ref})](${sefariaUrl(ref)})`;
