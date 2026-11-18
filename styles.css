@@ -225,9 +225,28 @@
 	background: var(--text-highlight-bg, rgba(255, 208, 0, 0.25));
 	border-inline-start-color: var(--interactive-accent);
 }
-.sefaria-seg-num {
+.sefaria-seg-side {
 	flex: 0 0 auto;
 	min-width: 2.2em;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 4px;
+}
+.sefaria-seg-copy {
+	display: flex;
+	color: var(--text-faint);
+	opacity: 0.6;
+}
+.sefaria-seg-copy svg {
+	width: 14px;
+	height: 14px;
+}
+.sefaria-seg-copy:hover {
+	color: var(--text-accent);
+	opacity: 1;
+}
+.sefaria-seg-num {
 	padding-top: 0.35em;
 	text-align: right;
 	font-size: var(--font-ui-smaller);

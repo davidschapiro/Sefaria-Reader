@@ -8,8 +8,10 @@ import {
 	buildContents,
 	loadPassage,
 	parseSefariaUrl,
+	plainTextOf,
 	sefariaUrl,
 	stripHebrewMarks,
+	textWithReference,
 } from "./refs";
 import { HEBREW_FONTS, LAYOUTS } from "./settings";
 
@@ -372,11 +374,17 @@ export class SefariaView extends ItemView {
 
 	private renderSegment(parent: HTMLElement, seg: Segment, vowels: boolean, cantillation: boolean): HTMLElement {
 		const el = parent.createDiv({ cls: "sefaria-seg", attr: { "data-ref": seg.ref } });
-		el.createEl("a", {
+		const side = el.createDiv({ cls: "sefaria-seg-side" });
+		side.createEl("a", {
 			cls: "sefaria-seg-num",
 			text: seg.label,
 			attr: { href: "#", "aria-label": `${seg.ref}: copy and more` },
 		});
+		const copyBtn = side.createEl("a", {
+			cls: "sefaria-seg-copy",
+			attr: { href: "#", "aria-label": `Copy ${seg.ref} with reference` },
+		});
+		setIcon(copyBtn, "copy");
 		const cols = el.createDiv({ cls: "sefaria-seg-cols" });
 		if (seg.he) {
 			const he = cols.createDiv({ cls: "sefaria-he", attr: { dir: "rtl", lang: "he" } });
@@ -595,6 +603,12 @@ export class SefariaView extends ItemView {
 		const a = target.closest("a");
 		if (!a) return;
 
+		if (a.classList.contains("sefaria-seg-copy")) {
+			evt.preventDefault();
+			const seg = a.closest<HTMLElement>(".sefaria-seg");
+			if (seg) void this.copy(this.segmentWithReference(seg));
+			return;
+		}
 		if (a.classList.contains("sefaria-seg-num")) {
 			evt.preventDefault();
 			const seg = a.closest<HTMLElement>(".sefaria-seg");
@@ -657,10 +671,15 @@ export class SefariaView extends ItemView {
 	}
 
 	private plainText(el: Element | null): string {
-		if (!el) return "";
-		const clone = el.cloneNode(true) as HTMLElement;
-		clone.querySelectorAll(".footnote, .footnote-marker").forEach((n) => n.remove());
-		return (clone.textContent ?? "").replace(/\s+/g, " ").trim();
+		return plainTextOf(el);
+	}
+
+	private segmentWithReference(seg: HTMLElement): string {
+		return textWithReference(
+			this.plainText(seg.querySelector(".sefaria-he")),
+			this.plainText(seg.querySelector(".sefaria-en")),
+			seg.getAttribute("data-ref") ?? ""
+		);
 	}
 
 	private segmentMenu(seg: HTMLElement, evt: MouseEvent): void {
@@ -680,7 +699,7 @@ export class SefariaView extends ItemView {
 		copy("Copy Hebrew", he);
 		copy("Copy English", en);
 		if (he && en) copy("Copy both", `${he}\n${en}`);
-		copy("Copy both with reference", [he, en, `(${ref})`].filter(Boolean).join("\n"));
+		copy("Copy both with reference", textWithReference(he, en, ref));
 		menu.addSeparator();
 		copy("Copy reference", ref);
 		copy("Copy link", `[${ref}](${sefariaUrl(ref)})`);

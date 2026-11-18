@@ -20,7 +20,7 @@ This plugin is powered by Sefaria's open API but was not developed by Sefaria.
 - **Hebrew fonts:** Taamey Frank (the font Sefaria uses) and Noto Sans Hebrew are bundled, so Hebrew looks the same on every device. You can also use your theme font or any installed font.
 - **Text size:** the Aa button in the reader opens sliders for Hebrew and English; changes apply instantly and keep your place.
 - **Vowels and cantillation** can each be switched off. Text you copy matches what is displayed.
-- **Copy helpers.** Click a segment number (or right-click a segment) to copy the Hebrew, the English, both, the reference, or a Markdown link. Ordinary select-and-copy works too.
+- **Copy helpers.** The copy icon under each segment number copies Hebrew, English and a linked reference, e.g. `[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)`, in one click. Click a segment number (or right-click a segment) to copy the Hebrew, the English, both, the reference, or a Markdown link. Poetry keeps its line breaks. Ordinary select-and-copy works too.
 - **Footnotes** in translations expand when you click their marker.
 
 ## Usage
@@ -34,7 +34,7 @@ This plugin is powered by Sefaria's open API but was not developed by Sefaria.
 
 The plugin needs an internet connection. It sends requests only to `https://www.sefaria.org/api/` (texts, name lookup, search, table of contents). No account, no API key, no telemetry. Nothing is written to your vault.
 
-The plugin writes to the clipboard only when you choose one of the copy commands on a segment. It never reads the clipboard.
+The plugin writes to the clipboard only when you click a copy icon or choose one of the copy commands on a segment. It never reads the clipboard.
 
 ## Text licenses
 

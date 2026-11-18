@@ -51,6 +51,34 @@ export function sefariaUrl(ref: string): string {
 	return "https://www.sefaria.org/" + encodeURI(s).replace(/\?/g, "%3F").replace(/#/g, "%23");
 }
 
+/**
+ * Copyable text of a rendered segment: footnotes dropped; line breaks (poetry, e.g. JPS
+ * prophets and Psalms) kept as newlines, so copied poetry keeps its lines as on Sefaria.
+ */
+export function plainTextOf(el: Element | null): string {
+	if (!el) return "";
+	const clone = el.cloneNode(true) as Element;
+	clone.querySelectorAll(".footnote, .footnote-marker").forEach((n) => n.remove());
+	// <br> becomes a marker first, so newlines that are only whitespace in the HTML source stay spaces
+	const BREAK = "\u0001";
+	clone.querySelectorAll("br").forEach((n) => n.replaceWith(BREAK));
+	return (clone.textContent ?? "")
+		.split(BREAK)
+		.map((line) => line.replace(/\s+/g, " ").trim())
+		.filter(Boolean)
+		.join("\n");
+}
+
+/** Markdown link whose text is the reference in parentheses: [(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14) */
+export function referenceLink(ref: string): string {
+	return `[(${ref})](${sefariaUrl(ref)})`;
+}
+
+/** Hebrew, English and the linked reference, one per line (empty parts skipped). */
+export function textWithReference(he: string, en: string, ref: string): string {
+	return [he, en, ref ? referenceLink(ref) : ""].filter(Boolean).join("\n");
+}
+
 const CANTILLATION = /[֑-֯]/g;
 const VOWELS = /[ְ-ׇֽֿׁׂׅׄ]/g;
 
