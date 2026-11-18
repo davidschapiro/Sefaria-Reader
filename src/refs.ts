@@ -79,6 +79,21 @@ export function textWithReference(he: string, en: string, ref: string): string {
 	return [he, en, ref ? referenceLink(ref) : ""].filter(Boolean).join("\n");
 }
 
+/**
+ * Hebrew, English and the linked reference as one Markdown quote with "> " on every line.
+ * In Live Preview each line gets its own direction (Hebrew bar right, English bar left); in
+ * Reading view the whole quote follows its first line, so a Hebrew-first quote has the bar on the right.
+ */
+export function quoteWithReference(he: string, en: string, ref: string): string {
+	const quote = (lines: string[]) =>
+		lines
+			.flatMap((l) => l.split("\n"))
+			.filter(Boolean)
+			.map((l) => "> " + l)
+			.join("\n");
+	return [quote([he]), quote([en, ref ? referenceLink(ref) : ""])].filter(Boolean).join("\n");
+}
+
 const CANTILLATION = /[֑-֯]/g;
 const VOWELS = /[ְ-ׇֽֿׁׂׅׄ]/g;
 

@@ -20,7 +20,7 @@ This plugin is powered by Sefaria's open API but was not developed by Sefaria.
 - **Hebrew fonts:** Taamey Frank (the font Sefaria uses) and Noto Sans Hebrew are bundled, so Hebrew looks the same on every device. You can also use your theme font or any installed font.
 - **Text size:** the Aa button in the reader opens sliders for Hebrew and English; changes apply instantly and keep your place.
 - **Vowels and cantillation** can each be switched off. Text you copy matches what is displayed.
-- **Copy helpers.** The copy icon under each segment number copies Hebrew, English and a linked reference, e.g. `[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)`, in one click. Click a segment number (or right-click a segment) to copy the Hebrew, the English, both, the reference, or a Markdown link. Poetry keeps its line breaks. Ordinary select-and-copy works too.
+- **Copy helpers.** The copy icon under each segment number copies Hebrew, English and a linked reference, e.g. `[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)`, in one click, as a Markdown quote with `> ` on every line. Click a segment number (or right-click a segment) to copy the Hebrew, the English, both, the reference, or a Markdown link. Poetry keeps its line breaks. Ordinary select-and-copy works too.
 - **Footnotes** in translations expand when you click their marker.
 
 ## Usage

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 import { SefariaApi, TextResponse } from "../src/api";
-import { buildContents, flattenSection, loadPassage, parseSefariaUrl, plainTextOf, referenceLink, sectionLabels, sefariaUrl, stripHebrewMarks, textWithReference } from "../src/refs";
+import { buildContents, flattenSection, loadPassage, parseSefariaUrl, plainTextOf, quoteWithReference, referenceLink, sectionLabels, sefariaUrl, stripHebrewMarks, textWithReference } from "../src/refs";
 
 test("parseSefariaUrl accepts text links and rejects site pages", () => {
 	assert.equal(parseSefariaUrl("https://www.sefaria.org/Genesis.1.1?lang=bi&with=all"), "Genesis.1.1");
@@ -45,6 +45,15 @@ test("plainTextOf keeps poetry line breaks and drops footnotes", () => {
 	el.innerHTML = "  prose   with \n  spaces <b>bold</b> ";
 	assert.equal(plainTextOf(el), "prose with spaces bold");
 	assert.equal(plainTextOf(null), "");
+});
+
+test("quoteWithReference quotes every line, Hebrew and English in one quote", () => {
+	assert.equal(
+		quoteWithReference("וְעַתָּה יוֹסִפוּ לַחֲטֹא", "And now they go on sinning;\nThey have made them molten images,", "Hosea 13:2"),
+		"> וְעַתָּה יוֹסִפוּ לַחֲטֹא\n> And now they go on sinning;\n> They have made them molten images,\n> [(Hosea 13:2)](https://www.sefaria.org/Hosea.13.2)"
+	);
+	assert.equal(quoteWithReference("", "Only English", "Genesis 1:1"), "> Only English\n> [(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
+	assert.equal(quoteWithReference("עברית", "", "Genesis 1:1"), "> עברית\n> [(Genesis 1:1)](https://www.sefaria.org/Genesis.1.1)");
 });
 
 test("stripHebrewMarks removes cantillation and vowels independently", () => {

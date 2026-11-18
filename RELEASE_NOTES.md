@@ -1,5 +1,4 @@
 Requires Obsidian 1.13 or newer.
 
-- New copy icon under each segment number: one click copies Hebrew, English and the reference
-- "Copy both with reference" now links the reference to Sefaria: `[(Hosea 12:14)](https://www.sefaria.org/Hosea.12.14)`
-- Copied poetry keeps its line breaks, as on Sefaria (before, lines like JPS Hosea ran together: "Assuredly,They shall…")
+- The copy icon now copies Hebrew, English and the linked reference as a Markdown quote, with `> ` on every line (pasting multi-line text into a quote used to leave the later lines without `>`)
+- New menu item "Copy as quote with reference" does the same; "Copy both with reference" stays plain text
